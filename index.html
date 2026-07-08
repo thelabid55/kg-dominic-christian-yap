@@ -697,19 +697,265 @@
         <span id="message-text" class="font-medium"></span>
     </div>
 
+    <!-- Product Details & Reviews Modal -->
+    <div id="product-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full mx-4 overflow-hidden transform scale-95 transition-all duration-300 max-h-[90vh] flex flex-col">
+            <!-- Modal Header -->
+            <div class="px-8 py-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <h3 id="modal-product-name" class="font-serif font-bold text-2xl text-gray-900">Product Name</h3>
+                <button onclick="closeProductModal()" class="text-gray-400 hover:text-gray-600 transition-colors p-2 rounded-full hover:bg-gray-100 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Modal Content (Scrollable) -->
+            <div class="p-6 md:p-8 overflow-y-auto flex-grow grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+                <!-- Left Column: Image & Add-to-Cart -->
+                <div class="flex flex-col gap-6">
+                    <div class="rounded-2xl overflow-hidden border border-gray-100 shadow-sm aspect-[4/3] bg-gray-50 flex items-center justify-center relative">
+                        <img id="modal-product-image" src="" alt="" class="object-cover w-full h-full">
+                    </div>
+                    <div class="flex items-center justify-between bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                        <span id="modal-product-price" class="text-3xl font-bold text-store-green">$0.00</span>
+                        <button id="modal-add-to-cart-btn" class="bg-store-blue hover:bg-blue-600 text-white font-bold px-6 py-3 rounded-xl transition-all shadow-md hover:shadow-lg flex items-center gap-2">
+                            Add to Cart
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Right Column: Details & Reviews -->
+                <div class="flex flex-col gap-6 text-left">
+                    <!-- Description -->
+                    <div>
+                        <h4 class="font-bold text-gray-800 uppercase tracking-wider text-xs mb-2 border-b border-gray-100 pb-1">Description</h4>
+                        <p id="modal-product-description" class="text-gray-600 leading-relaxed text-sm"></p>
+                    </div>
+                    
+                    <!-- Specs -->
+                    <div>
+                        <h4 class="font-bold text-gray-800 uppercase tracking-wider text-xs mb-2 border-b border-gray-100 pb-1">Specifications</h4>
+                        <ul id="modal-product-specs" class="list-disc pl-5 text-gray-600 text-sm space-y-1">
+                            <!-- Injected dynamically -->
+                        </ul>
+                    </div>
+                    
+                    <!-- Reviews Section -->
+                    <div class="border-t border-gray-100 pt-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-bold text-gray-800 uppercase tracking-wider text-xs">Customer Reviews</h4>
+                            <span id="modal-average-rating" class="text-sm font-semibold text-gray-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <svg class="w-4 h-4 text-amber-500 fill-amber-500" viewBox="0 0 24 24">
+                                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                </svg>
+                                <span id="modal-rating-value">0.0</span>
+                            </span>
+                        </div>
+                        
+                        <!-- Review list container -->
+                        <div id="modal-reviews-list" class="space-y-4 max-h-[220px] overflow-y-auto pr-2 divide-y divide-gray-50">
+                            <!-- Injected dynamically -->
+                        </div>
+                        
+                        <!-- Review Form -->
+                        <form id="write-review-form" onsubmit="submitReview(event)" class="mt-6 border-t border-gray-100 pt-4 flex flex-col gap-3">
+                            <h5 class="text-sm font-bold text-gray-800 font-serif">Add Your Review</h5>
+                            <div class="flex items-center gap-3">
+                                <span class="text-xs text-gray-500 font-medium">Rating:</span>
+                                <div class="flex gap-1" id="star-rating-input">
+                                    <button type="button" onclick="setRatingSelection(1)" class="star-btn text-2xl text-gray-300 hover:text-amber-400 focus:outline-none transition-colors" data-val="1">★</button>
+                                    <button type="button" onclick="setRatingSelection(2)" class="star-btn text-2xl text-gray-300 hover:text-amber-400 focus:outline-none transition-colors" data-val="2">★</button>
+                                    <button type="button" onclick="setRatingSelection(3)" class="star-btn text-2xl text-gray-300 hover:text-amber-400 focus:outline-none transition-colors" data-val="3">★</button>
+                                    <button type="button" onclick="setRatingSelection(4)" class="star-btn text-2xl text-gray-300 hover:text-amber-400 focus:outline-none transition-colors" data-val="4">★</button>
+                                    <button type="button" onclick="setRatingSelection(5)" class="star-btn text-2xl text-gray-300 hover:text-amber-400 focus:outline-none transition-colors" data-val="5">★</button>
+                                </div>
+                            </div>
+                            <div class="flex flex-col sm:flex-row gap-2">
+                                <input type="text" id="reviewer-name-input" placeholder="Your Name" required class="sm:w-1/3 text-sm border border-gray-200 rounded-xl px-3 py-2 focus:ring-2 focus:ring-store-blue focus:outline-none bg-gray-50/50">
+                                <input type="text" id="reviewer-comment-input" placeholder="Share your experience..." required class="flex-grow text-sm border border-gray-200 rounded-xl px-4 py-2 focus:ring-2 focus:ring-store-blue focus:outline-none bg-gray-50/50">
+                                <button type="submit" class="bg-store-black hover:bg-gray-800 text-white text-sm font-bold px-4 py-2 rounded-xl transition-colors shrink-0">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Application Logic -->
     <script>
         // Mock Product Data (including the Tab S9)
         const products = [
-            { id: 1, name: 'iPhone 15 Pro Max', price: 1199.99, category: 'phones', image: 'https://radarbanyumas.disway.id/upload/f8888e446ec1b44206bb5930c6d404f6.jpg' },
-            { id: 2, name: 'Samsung Galaxy S24', price: 859.99, category: 'phones', image: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&q=80&w=800' },
-            { id: 3, name: 'MacBook Pro 14"', price: 1999.99, category: 'laptops', image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=800' },
-            { id: 4, name: 'Dell XPS 15', price: 1799.99, category: 'laptops', image: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&q=80&w=800' },
-            { id: 5, name: 'iPad Pro M2', price: 799.99, category: 'tablets', image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800' },
-            { id: 6, name: 'Samsung Galaxy Tab S9', price: 799.99, category: 'tablets', image: 'https://cdnpro.eraspace.com/media/catalog/product/s/a/samsung_galaxy_tab_s9_fe_wi-fi_gray_1.jpg' },
-            { id: 7, name: 'PlayStation 5', price: 499.99, category: 'consoles', image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&q=80&w=800' },
-            { id: 8, name: 'Nintendo Switch OLED', price: 349.99, category: 'consoles', image: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&q=80&w=800' },
-            { id: 9, name: 'Xbox Series S', price: 449.99, category: 'consoles', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-Ib9LgMpmK1HtsVGoKBy5Jl7NTUnVmWQK65Q4ZMQd1Q&s=10' }
+            { 
+                id: 1, 
+                name: 'iPhone 15 Pro Max', 
+                price: 1199.99, 
+                category: 'phones', 
+                image: 'https://radarbanyumas.disway.id/upload/f8888e446ec1b44206bb5930c6d404f6.jpg',
+                description: 'Experience titanium design, the groundbreaking A17 Pro chip, a customizable Action button, and the most powerful iPhone camera system ever.',
+                specs: [
+                    'Super Retina XDR display with ProMotion',
+                    'A17 Pro chip with 6-core GPU',
+                    'Pro camera system (48MP Main, Ultra Wide, Telephoto)',
+                    'Up to 29 hours video playback',
+                    'USB-C connector with USB 3 support'
+                ],
+                reviews: [
+                    { author: 'Christian', rating: 5, comment: 'The titanium build feels amazing. Battery life is fantastic!' },
+                    { author: 'Dominic', rating: 4, comment: 'Camera zoom is excellent. A bit expensive, but worth the premium feel.' }
+                ]
+            },
+            { 
+                id: 2, 
+                name: 'Samsung Galaxy S24', 
+                price: 859.99, 
+                category: 'phones', 
+                image: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?auto=format&fit=crop&q=80&w=800',
+                description: 'Step into the future with Galaxy AI. Capture stunning details with the 50MP camera and enjoy the brightest adaptive mobile display.',
+                specs: [
+                    'Dynamic AMOLED 2X FHD+ Display',
+                    'Snapdragon 8 Gen 3 for Galaxy',
+                    '50MP Triple Rear Camera, 12MP Front Camera',
+                    '4000mAh Battery with Super Fast Charging',
+                    'IP68 Water & Dust Resistance'
+                ],
+                reviews: [
+                    { author: 'Siti', rating: 5, comment: 'Galaxy AI search circle is incredibly useful. The display is very bright.' },
+                    { author: 'Yusuf', rating: 4, comment: 'Very compact and powerful. Wish the battery was slightly larger.' }
+                ]
+            },
+            { 
+                id: 3, 
+                name: 'MacBook Pro 14"', 
+                price: 1999.99, 
+                category: 'laptops', 
+                image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=800',
+                description: 'The ultimate portable powerhouse. Equipped with the revolutionary M3 chip, a brilliant Liquid Retina XDR display, and up to 22 hours of battery life.',
+                specs: [
+                    'Apple M3 chip with 8-core CPU and 10-core GPU',
+                    '14.2-inch Liquid Retina XDR display',
+                    '8GB Unified Memory (configurable)',
+                    '512GB Superfast SSD Storage',
+                    'Backlit Magic Keyboard with Touch ID'
+                ],
+                reviews: [
+                    { author: 'Kevin', rating: 5, comment: 'Absolutely silent and does not heat up at all. Performance is incredible.' }
+                ]
+            },
+            { 
+                id: 4, 
+                name: 'Dell XPS 15', 
+                price: 1799.99, 
+                category: 'laptops', 
+                image: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&q=80&w=800',
+                description: 'The benchmark for premium Windows laptops. Featuring a stunning InfinityEdge display, powerful Intel Core processor, and high-end materials.',
+                specs: [
+                    '15.6-inch OLED 3.5K Touch Display',
+                    'Intel Core i7 13th Gen Processor',
+                    '16GB DDR5 Memory, 1TB NVMe SSD',
+                    'NVIDIA GeForce RTX 4050 GPU',
+                    'CNC Machined Aluminum with Carbon Fiber Palmrest'
+                ],
+                reviews: [
+                    { author: 'Alex', rating: 4, comment: 'The OLED screen is gorgeous. Performance is great for video editing.' }
+                ]
+            },
+            { 
+                id: 5, 
+                name: 'iPad Pro M2', 
+                price: 799.99, 
+                category: 'tablets', 
+                image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&q=80&w=800',
+                description: 'Astonishing performance. Incredibly advanced displays. Superfast wireless connectivity. Next-level Apple Pencil capabilities. Limitless possibilities.',
+                specs: [
+                    'Apple M2 Chip with 8-core CPU',
+                    '11-inch Liquid Retina Display with ProMotion',
+                    '12MP Wide & 10MP Ultra Wide Cameras',
+                    'USB-C connector with Thunderbolt 4 support',
+                    'Compatible with Apple Pencil (2nd gen) and Magic Keyboard'
+                ],
+                reviews: [
+                    { author: 'Jane', rating: 5, comment: 'M2 chip makes it a beast. Replacing my laptop for travel!' }
+                ]
+            },
+            { 
+                id: 6, 
+                name: 'Samsung Galaxy Tab S9', 
+                price: 799.99, 
+                category: 'tablets', 
+                image: 'https://cdnpro.eraspace.com/media/catalog/product/s/a/samsung_galaxy_tab_s9_fe_wi-fi_gray_1.jpg',
+                description: 'Redefining the tablet experience. Featuring an IP68 dust/water resistant body, a dynamic AMOLED 2X screen, and the included low-latency S Pen.',
+                specs: [
+                    '11-inch Dynamic AMOLED 2X 120Hz display',
+                    'Snapdragon 8 Gen 2 for Galaxy',
+                    'IP68 Water and Dust Resistance',
+                    'Ultra-low-latency S Pen included in the box',
+                    '8400mAh Battery with 45W Fast Charging'
+                ],
+                reviews: [
+                    { author: 'Agus', rating: 5, comment: 'S Pen feels so natural. Brilliant AMOLED screen!' },
+                    { author: 'Fauzi', rating: 4, comment: 'Waterproof rating is great. Perfect for watching movies by the pool.' }
+                ]
+            },
+            { 
+                id: 7, 
+                name: 'PlayStation 5', 
+                price: 499.99, 
+                category: 'consoles', 
+                image: 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&q=80&w=800',
+                description: 'Experience lightning-fast loading with an ultra-high speed SSD, deeper immersion with support for haptic feedback, adaptive triggers, and 3D Audio.',
+                specs: [
+                    'Custom AMD Zen 2 CPU, RDNA 2 GPU',
+                    'Ultra-high speed 825GB SSD',
+                    'Support for 4K 120Hz displays and Ray Tracing',
+                    'Tempest 3D AudioTech',
+                    'Includes DualSense Wireless Controller'
+                ],
+                reviews: [
+                    { author: 'Toni', rating: 5, comment: 'Loading times are non-existent. Astro Bot is a masterpiece!' }
+                ]
+            },
+            { 
+                id: 8, 
+                name: 'Nintendo Switch OLED', 
+                price: 349.99, 
+                category: 'consoles', 
+                image: 'https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&q=80&w=800',
+                description: 'Play at home on the TV or on the go with a vibrant 7-inch OLED screen. Features a wide adjustable stand, a wired LAN port, and 64GB of internal storage.',
+                specs: [
+                    '7-inch OLED Touch Screen with vivid colors',
+                    'Wide, adjustable stand for tabletop mode',
+                    'Wired LAN port in dock for stable online play',
+                    '64GB Internal Storage (expandable)',
+                    'Enhanced audio from onboard speakers'
+                ],
+                reviews: [
+                    { author: 'Rian', rating: 5, comment: 'OLED screen makes Zelda look amazing in handheld mode.' },
+                    { author: 'Eka', rating: 4, comment: 'Great screen, but internal hardware performance is getting a bit old.' }
+                ]
+            },
+            { 
+                id: 9, 
+                name: 'Xbox Series S', 
+                price: 449.99, 
+                category: 'consoles', 
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-Ib9LgMpmK1HtsVGoKBy5Jl7NTUnVmWQK65Q4ZMQd1Q&s=10',
+                description: 'Go all-digital with Xbox Series S and enjoy next-gen performance in the smallest Xbox ever, at a great price.',
+                specs: [
+                    'Custom AMD Zen 2 CPU, AMD RDNA 2 GPU',
+                    '512GB Custom NVMe SSD',
+                    'Support for 1440p gaming up to 120FPS',
+                    'Xbox Velocity Architecture support',
+                    'Full backward compatibility with thousands of games'
+                ],
+                reviews: [
+                    { author: 'Budi', rating: 5, comment: 'Unbelievable value for Game Pass. Small footprint!' }
+                ]
+            }
         ];
 
         // State
@@ -749,8 +995,14 @@
 
             filteredProducts.forEach((product, index) => {
                 const card = document.createElement('div');
-                card.className = 'bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col group scroll-anim anim-up';
+                card.className = 'bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col group cursor-pointer scroll-anim anim-up';
                 card.style.transitionDelay = `${(index % 4) * 100}ms`; // Stagger animation
+                card.onclick = (e) => {
+                    // Only open details modal if the user didn't click the "Add to Cart" button
+                    if (!e.target.closest('button')) {
+                        openProductModal(product.id);
+                    }
+                };
                 card.innerHTML = `
                     <div class="relative overflow-hidden aspect-w-4 aspect-h-3 bg-gray-100">
                         <img src="${product.image}" alt="${product.name}" class="object-cover w-full h-64 transition-transform duration-500 group-hover:scale-105">
@@ -874,6 +1126,174 @@
         function hideMessage() {
             const box = document.getElementById('message-box');
             box.classList.add('translate-y-full', 'opacity-0');
+        }
+
+        // Modal State
+        let currentActiveProductId = null;
+        let selectedRating = 0;
+
+        // Open Modal
+        function openProductModal(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            currentActiveProductId = productId;
+            selectedRating = 0; // Reset rating input selection
+            setRatingSelection(0); // Clear stars highlight
+
+            // Populate Text & Image
+            document.getElementById('modal-product-name').innerText = product.name;
+            document.getElementById('modal-product-image').src = product.image;
+            document.getElementById('modal-product-image').alt = product.name;
+            document.getElementById('modal-product-price').innerText = `$${product.price.toFixed(2)}`;
+            document.getElementById('modal-product-description').innerText = product.description || 'No description available.';
+
+            // Populate Specs
+            const specsContainer = document.getElementById('modal-product-specs');
+            specsContainer.innerHTML = '';
+            if (product.specs && product.specs.length > 0) {
+                product.specs.forEach(spec => {
+                    const li = document.createElement('li');
+                    li.innerText = spec;
+                    specsContainer.appendChild(li);
+                });
+            } else {
+                specsContainer.innerHTML = '<li>Standard technical specifications apply.</li>';
+            }
+
+            // Populate Reviews & Average Rating
+            renderModalReviews(product);
+
+            // Configure Add to Cart Button in Modal
+            const cartBtn = document.getElementById('modal-add-to-cart-btn');
+            cartBtn.onclick = () => {
+                addToCart(product.id);
+            };
+
+            // Open Modal with Anim
+            const modal = document.getElementById('product-modal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.firstElementChild.classList.remove('scale-95');
+            modal.firstElementChild.classList.add('scale-100');
+        }
+
+        // Close Modal
+        function closeProductModal() {
+            const modal = document.getElementById('product-modal');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.firstElementChild.classList.remove('scale-100');
+            modal.firstElementChild.classList.add('scale-95');
+            
+            // Reset form fields
+            document.getElementById('write-review-form').reset();
+            currentActiveProductId = null;
+        }
+
+        // Close modal when clicking outside the content box
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('product-modal');
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeProductModal();
+                }
+            });
+        });
+
+        // Set Rating Star Selection
+        function setRatingSelection(rating) {
+            selectedRating = rating;
+            const stars = document.querySelectorAll('#star-rating-input .star-btn');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove('text-gray-300');
+                    star.classList.add('text-amber-400');
+                } else {
+                    star.classList.remove('text-amber-400');
+                    star.classList.add('text-gray-300');
+                }
+            });
+        }
+
+        // Helper to render reviews list & compute average
+        function renderModalReviews(product) {
+            const list = document.getElementById('modal-reviews-list');
+            const ratingValueEl = document.getElementById('modal-rating-value');
+            list.innerHTML = '';
+
+            const reviews = product.reviews || [];
+            
+            if (reviews.length === 0) {
+                list.innerHTML = '<p class="text-gray-500 text-sm py-4 text-center">No reviews yet. Be the first to write one!</p>';
+                ratingValueEl.innerText = '0.0';
+                return;
+            }
+
+            // Compute Average
+            const totalRating = reviews.reduce((sum, r) => sum + r.rating, 0);
+            const average = (totalRating / reviews.length).toFixed(1);
+            ratingValueEl.innerText = average;
+
+            // Render Review Items
+            reviews.forEach(review => {
+                const item = document.createElement('div');
+                item.className = 'py-4 first:pt-0';
+                
+                // Stars HTML
+                let starsHTML = '';
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= review.rating) {
+                        starsHTML += '<span class="text-amber-400">★</span>';
+                    } else {
+                        starsHTML += '<span class="text-gray-200">★</span>';
+                    }
+                }
+
+                item.innerHTML = `
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="font-bold text-gray-800 text-sm">${review.author}</span>
+                        <div class="flex text-xs">${starsHTML}</div>
+                    </div>
+                    <p class="text-gray-600 text-sm">${review.comment}</p>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        // Submit New Review
+        function submitReview(event) {
+            event.preventDefault();
+            if (!currentActiveProductId) return;
+
+            const product = products.find(p => p.id === currentActiveProductId);
+            if (!product) return;
+
+            const nameInput = document.getElementById('reviewer-name-input');
+            const commentInput = document.getElementById('reviewer-comment-input');
+
+            if (selectedRating === 0) {
+                showMessage('Please select a star rating first.');
+                return;
+            }
+
+            const newReview = {
+                author: nameInput.value.trim(),
+                rating: selectedRating,
+                comment: commentInput.value.trim()
+            };
+
+            // Push into product reviews array
+            if (!product.reviews) {
+                product.reviews = [];
+            }
+            product.reviews.push(newReview);
+
+            // Re-render reviews
+            renderModalReviews(product);
+            showMessage('Thank you! Your review has been added.');
+
+            // Reset form input fields
+            event.target.reset();
+            setRatingSelection(0);
         }
 
         // Event Listeners & Initialization
