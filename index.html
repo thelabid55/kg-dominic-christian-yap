@@ -25,6 +25,29 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         serif: ['Playfair Display', 'serif'],
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 0 0 rgba(16, 185, 129, 0.4)' },
+                            '50%': { boxShadow: '0 0 0 10px rgba(16, 185, 129, 0)' },
+                        }
+                    },
+                    animation: {
+                        float: 'float 6s ease-in-out infinite',
+                        floatSlow: 'float 8s ease-in-out infinite',
+                        floatFast: 'float 4s ease-in-out infinite',
+                        blob: 'blob 7s infinite',
+                        pulseGlow: 'pulseGlow 2s infinite',
                     }
                 }
             }
@@ -175,25 +198,25 @@
                     <!-- Phone -->
                     <img src="https://radarbanyumas.disway.id/upload/f8888e446ec1b44206bb5930c6d404f6.jpg"
                         alt="iPhone 15 Pro Max"
-                        class="absolute top-25 left-28 w-60 rounded-3xl shadow-2xl z-20 border-4 border-gray-800 rotate-[-5deg] bg-white p-1 scroll-anim anim-scale"
+                        class="absolute top-25 left-28 w-60 rounded-3xl shadow-2xl z-20 border-4 border-gray-800 rotate-[-5deg] bg-white p-1 scroll-anim anim-scale animate-float"
                         style="transition-delay: 100ms;">
 
                     <!-- Laptop -->
                     <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=800"
                         alt="Laptop"
-                        class="absolute top-40 left-28 w-80 rounded-xl shadow-2xl z-10 border-8 border-gray-900 bg-white scroll-anim anim-scale"
+                        class="absolute top-40 left-28 w-80 rounded-xl shadow-2xl z-10 border-8 border-gray-900 bg-white scroll-anim anim-scale animate-floatSlow"
                         style="transition-delay: 300ms;">
 
                     <!-- Console (Switch-like) -->
-                    <img src="https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&q=80&w=600"
+                    <img src="https://helios-i.mashable.com/imagery/articles/07BhPa6EpFoKaaPE4MMaLOZ/hero-image.fill.size_1248x702.v1625580171.png"
                         alt="Gaming Console"
-                        class="absolute bottom-16 left-12 w-64 rounded-lg shadow-2xl z-30 bg-white p-2 scroll-anim anim-scale"
+                        class="absolute bottom-16 left-12 w-64 rounded-lg shadow-2xl z-30 bg-white p-2 scroll-anim anim-scale animate-floatFast"
                         style="transition-delay: 500ms;">
 
                     <!-- Console (PS5-like) -->
                     <img src="https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?auto=format&fit=crop&q=80&w=400"
                         alt="Next Gen Console"
-                        class="absolute bottom-6 right-16 w-48 rounded-2xl shadow-2xl z-20 drop-shadow-2xl bg-white p-2 scroll-anim anim-scale"
+                        class="absolute bottom-6 right-16 w-48 rounded-2xl shadow-2xl z-20 drop-shadow-2xl bg-white p-2 scroll-anim anim-scale animate-float"
                         style="transition-delay: 700ms;">
                 </div>
 
@@ -201,9 +224,9 @@
                 <div class="md:hidden grid grid-cols-2 gap-4 mt-12 scroll-anim anim-up">
                     <img src="https://radarbanyumas.disway.id/upload/f8888e446ec1b44206bb5930c6d404f6.jpg"
                         alt="iPhone 15 Pro Max"
-                        class="rounded-xl shadow-lg w-full h-auto object-cover aspect-square bg-white p-2">
+                        class="rounded-xl shadow-lg w-full h-auto object-cover aspect-square bg-white p-2 animate-floatFast">
                     <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=800"
-                        alt="Laptop" class="rounded-xl shadow-lg w-full h-auto object-cover aspect-square bg-white p-2">
+                        alt="Laptop" class="rounded-xl shadow-lg w-full h-auto object-cover aspect-square bg-white p-2 animate-floatSlow">
                 </div>
 
                 <!-- Right Side: Text Content matching wireframe -->
@@ -229,7 +252,7 @@
                     <div class="mt-12 flex justify-center lg:justify-start scroll-anim anim-up"
                         style="transition-delay: 800ms;">
                         <a href="#categories"
-                            class="bg-store-black text-white px-10 py-4 rounded-full font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors shadow-xl hover:shadow-2xl transform hover:-translate-y-1 duration-200">Shop
+                            class="bg-store-black text-white px-10 py-4 rounded-full font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors shadow-xl hover:shadow-2xl transform hover:-translate-y-1 duration-200 animate-pulseGlow">Shop
                             Now</a>
                     </div>
                 </div>
