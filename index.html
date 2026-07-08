@@ -828,8 +828,8 @@
                     'USB-C connector with USB 3 support'
                 ],
                 reviews: [
-                    { author: 'Christian', rating: 5, comment: 'The titanium build feels amazing. Battery life is fantastic!' },
-                    { author: 'Dominic', rating: 4, comment: 'Camera zoom is excellent. A bit expensive, but worth the premium feel.' }
+                    { author: 'Alice', rating: 5, comment: 'The titanium build feels amazing. Battery life is fantastic!' },
+                    { author: 'Bob', rating: 4, comment: 'Camera zoom is excellent. A bit expensive, but worth the premium feel.' }
                 ]
             },
             { 
@@ -1128,7 +1128,9 @@
 
         function checkout() {
             if (cart.length > 0) {
-                showMessage("Checkout feature coming soon!");
+                cart = [];
+                updateCartUI();
+                showMessage("Checkout successful! Thank you for your purchase.");
             }
         }
 
